@@ -1,24 +1,18 @@
 const express = require("express");
 const app = express();
+const handlebars = require("express-handlebars")
+const Sequelize = require('sequelize')
 
-app.get("/", function(req, res) {
-	res.sendFile(__dirname + "/html/index.html");
-});
+// Config
+	// Template Engine
+		app.engine('handlebars', handlebars({defaultLayout: 'main'}))
+		app.set('view engine', 'handlebars')
 
-app.get("/sobre", function(req, res) {
-	res.sendFile(__dirname + "/html/sobre.html");
-});
-
-app.get("/blog", function(req, res) {
-	res.send("Bem-vindo ao meu blog!");
-});
-
-app.get("/ola/:nome/:cargo/:cor", function(req, res) {
-	res.send("<h1>Ola " + req.params.nome + "</h1>" + 
-		"<h2> Seu cargo e: " + req.params.cargo + 
-		"</h2>" + "<h3> Sua cor favorita: " + req.params.cor + "</h3>" );
-	
-});
+// Conexão com banco de dados MySql
+const sequelize = new Sequelize('test', 'root', '', {
+	host: "localhost",
+	dialect: 'mysql'
+})
 
 // Linha de código deve sempre estar na última para executar o servidor 
 app.listen(8081, function() {
